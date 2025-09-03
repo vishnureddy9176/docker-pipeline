@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tollywood Ticket Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff4d4d;
+            --secondary: #ff9e1f;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(to right, var(--dark), var(--primary));
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .hero {
+            height: 500px;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1595769816263-9b910be24d5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1779&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--dark);
+            font-size: 2.2rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .movies {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .movie-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .movie-img {
+            height: 380px;
+            overflow: hidden;
+        }
+
+        .movie-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .movie-card:hover .movie-img img {
+            transform: scale(1.1);
+        }
+
+        .movie-details {
+            padding: 1.5rem;
+        }
+
+        .movie-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .movie-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+
+        .movie-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .timings {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .time-btn {
+            padding: 0.4rem 0.8rem;
+            background: #f1f1f1;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .time-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .booking-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .nav-links li {
+                margin: 0 0.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <span>Tollywood Tickets</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Movies</a></li>
+                <li><a href="#">Theaters</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Book Your Tollywood Movie Tickets</h1>
+        <p>Experience the magic of Telugu cinema with the best viewing experience. Book your tickets now for the latest blockbusters!</p>
+        <a href="#movies" class="btn">Explore Movies</a>
+    </section>
+
+    <!-- Movies Section -->
+    <section id="movies" class="container">
+        <h2 class="section-title">Now Showing</h2>
+        <div class="movies">
+            <!-- Movie 1 -->
+            <div class="movie-card">
+                <div class="movie-img">
+                    <img src="https://images.unsplash.com/photo-1635020166366-6334c3707957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Pushpa: The Rise">
+                </div>
+                <div class="movie-details">
+                    <h3 class="movie-title">Pushpa: The Rise</h3>
+                    <div class="movie-info">
+                        <span>Action/Drama</span>
+                        <span class="movie-price">₹200</span>
+                    </div>
+                    <div class="timings">
+                        <button class="time-btn">9:30 AM</button>
+                        <button class="time-btn">1:00 PM</button>
+                        <button class="time-btn">4:30 PM</button>
+                        <button class="time-btn">8:00 PM</button>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">Book Now</button>
+                </div>
+            </div>
+
+            <!-- Movie 2 -->
+            <div class="movie-card">
+                <div class="movie-img">
+                    <img src="https://images.unsplash.com/photo-1585951237318-9ea5e175b891?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="RRR">
+                </div>
+                <div class="movie-details">
+                    <h3 class="movie-title">RRR</h3>
+                    <div class="movie-info">
+                        <span>Action/Drama</span>
+                        <span class="movie-price">₹250</span>
+                    </div>
+                    <div class="timings">
+                        <button class="time-btn">10:00 AM</button>
+                        <button class="time-btn">1:30 PM</button>
+                        <button class="time-btn">5:00 PM</button>
+                        <button class="time-btn">8:30 PM</button>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">Book Now</button>
+                </div>
+            </div>
+
+            <!-- Movie 3 -->
+            <div class="movie-card">
+                <div class="movie-img">
+                    <img src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="Bahubali 2">
+                </div>
+                <div class="movie-details">
+                    <h3 class="movie-title">Bahubali 2</h3>
+                    <div class="movie-info">
+                        <span>Action/Fantasy</span>
+                        <span class="movie-price">₹220</span>
+                    </div>
+                    <div class="timings">
+                        <button class="time-btn">9:00 AM</button>
+                        <button class="time-btn">12:30 PM</button>
+                        <button class="time-btn">4:00 PM</button>
+                        <button class="time-btn">7:30 PM</button>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Form -->
+    <section class="container">
+        <h2 class="section-title">Book Your Tickets</h2>
+        <div class="booking-form">
+            <form id="bookingForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="movie">Select Movie</label>
+                        <select id="movie" required>
+                            <option value="">Choose a movie</option>
+                            <option value="pushpa">Pushpa: The Rise</option>
+                            <option value="rrr">RRR</option>
+                            <option value="bahubali">Bahubali 2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="theater">Select Theater</label>
+                        <select id="theater" required>
+                            <option value="">Choose a theater</option>
+                            <option value="pvr">PVR Cinemas</option>
+                            <option value="inox">INOX</option>
+                            <option value="carnival">Carnival Cinemas</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Select Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Select Time</label>
+                        <select id="time" required>
+                            <option value="">Choose a time</option>
+                            <option value="9:30">9:30 AM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="16:30">4:30 PM</option>
+                            <option value="20:00">8:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="seats">Number of Seats</label>
+                        <input type="number" id="seats" min="1" max="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required placeholder="Your email">
+                    </div>
+                </div>
+                <button type="submit" class="btn">Proceed to Payment</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>We are the leading ticket booking platform for Tollywood movies, providing the best cinema experience with easy booking and great discounts.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Hyderabad, Telangana</p>
+                <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                <p><i class="fas fa-envelope"></i> info@tollywoodtickets.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Tollywood Tickets. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form submission handling
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const movie = document.getElementById('movie').value;
+            const theater = document.getElementById('theater').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const seats = document.getElementById('seats').value;
+            const email = document.getElementById('email').value;
+            
+            if (movie && theater && date && time && seats && email) {
+                alert(`Booking confirmed!\nMovie: ${document.getElementById('movie').options[document.getElementById('movie').selectedIndex].text}\nTheater: ${document.getElementById('theater').options[document.getElementById('theater').selectedIndex].text}\nDate: ${date}\nTime: ${document.getElementById('time').options[document.getElementById('time').selectedIndex].text}\nSeats: ${seats}\nA confirmation has been sent to: ${email}`);
+                
+                // Reset form
+                this.reset();
+            }
+        });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').setAttribute('min', today);
+    </script>
+</body>
+</html>
